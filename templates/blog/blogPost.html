@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog{% endblock title %}
+{% load static %}
+{% load get_dict %}
+
+{% block body %}
+
+<div class="container mt-4">
+        <h2 class="blog-post-title">{{post.title}}</h2>
+        <p class="blog-post-meta">{{post.timeStamp}} by <a href="#">{{post.author}}</a></p>
+
+        <p>{{post.content|safe}}</p>
+</div>
+
+<div class="container">
+  <h2>Comments ({{comments|length}})</h2>
+
+  {% if request.user.is_authenticated %}
+    <form class="d-flex my-3" action="/blog/postComment" method="post">
+      {% csrf_token %}
+      <input type="text" name="comment" placeholder= "Enter comment here" class="form-control">
+      <input type="hidden" name="postId" value="{{post.postId}}">
+      <input type="hidden" name="CommentId" value="">
+      <button type="submit" class="btn btn-primary mx-3">Submit</button>
+    </form>
+    
+  {% else %}
+    <p>Please Log in to enter comments!</p>
+  {% endif %}
+
+  {% for comment in comments %}
+  <div class="row my-4">
+    <div class="col-md-1"><img src="{% static 'img/user.png' %}" style="width: 41px;"></div>
+    <div class="col-md-11">
+      <b>{{comment.user.username}}</b> at {{comment.timestamp}}
+      <div>{{comment.comment}}</div>
+      {% if request.user.is_authenticated %}
+      <div class="reply mx-0 mt-2">
+        <p>
+          <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#ReplyBox{{forloop.counter}}" aria-expanded="false" aria-controls="ReplyBox{{forloop.counter}}">
+            Reply
+          </button>
+        </p>
+        <div class="collapse" id="ReplyBox{{forloop.counter}}">
+          <div class="card card-body mb-3">
+            <form class="d-flex" action="/blog/postComment" method="post">
+              {% csrf_token %}
+              <input style="flex:1;" name="comment" type="text" class="form-control" placeholder="Enter your reply here.">
+              <button class="btn btn-success mx-2" type="submit">Submit Reply</button>
+              <input type="hidden" name="CommentId" value="{{comment.sno}}">
+              <input type="hidden" name="postId" value="{{post.postId}}" class="form-control">
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <p>
+          <button class="btn btn-sm btn-primary" disabled>
+            Login to reply
+          </button>
+        </p>
+      {% endif %}
+      <div class="replies p-3 bg-light">
+          {% for reply in replyDict|get_val:comment.sno %}
+              <div class="row">
+              <div class="col-md-1">
+                <img src="{% static 'img/user.png' %}" style="width: 41px;">
+              </div>
+              <div class="col-md-11">
+                {{reply.user.username}} at {{reply.timestamp}}
+                <div>{{reply.comment}}</div>
+              </div>
+            </div>
+            <hr>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+  {% endfor %}
+  
+</div>
+{% endblock body %}

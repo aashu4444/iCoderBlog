@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block homeActive %}active{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <div class="w-100 p-4" style="background:#e9ecef!important;">
+        <h1 class="fw-light">Welcome to iCoder!</h1>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque quae odit provident culpa quos cum maxime libero, illo ex atque iure similique quisquam. Aut, saepe sit ratione necessitatibus laboriosam ipsam.</p>
+        <hr>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore adipisci rem pariatur nisi quia fugit?</p>
+        <a href="/blog" class="btn btn-lg btn-primary">Go to blog</a>
+    </div>
+</div>
+
+<div class="container my-4">
+<h2 class="mb-3">Popular BlogPosts : </h2>
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">World</strong>
+          <h3 class="mb-0">Featured post</h3>
+          <div class="mb-1 text-muted">Nov 12</div>
+          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="stretched-link">Continue reading</a>
+        </div>
+    </div>
+</div>
+{% endblock body %}
